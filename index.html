@@ -266,30 +266,32 @@ const linkCliente=c=>{
 };
 
 const MSG={
- P:(s,link)=>`Buongiorno ${s}, sono Max, consulente incaricato da MRF 2024.
+  P:(s,link)=>`Buongiorno ${s}, sono Max, consulente incaricato da MRF 2024.
 
-Le scrivo perche' come cliente MRF rientra nella convenzione attiva con Verisure, l'azienda n.1 in Europa negli allarmi monitorati.
+La contatto perché, in quanto cliente MRF, rientra nella convenzione attiva con Verisure, azienda leader in Europa nei sistemi di allarme monitorati.
 
-Le condizioni riservate: installazione, connessione e collegamento alla Centrale Operativa a 199 euro invece di 1.241, piu' 3 Shock Sensor in omaggio. Il sistema e' in comodato gratuito, con servizio in abbonamento.
+Le condizioni riservate prevedono: installazione, connessione e collegamento alla Centrale Operativa a 199 € anziché 1.241 €, più 3 Shock Sensor in omaggio. Il sistema è in comodato gratuito, con servizio in abbonamento.
 
-Per vedere i dettagli della convenzione e lasciarmi la sua risposta, apra questa pagina:
+Per conoscere tutti i dettagli della convenzione e indicarmi se desidera essere ricontattato, può utilizzare questa pagina:
 ${link}
 
-Da lì può indicarmi se desidera essere ricontattato e la fascia oraria preferita.
+Da lì potrà anche indicare la fascia oraria preferita.
 
 Se preferisce non ricevere altre comunicazioni, mi scriva STOP.`,
- A:(s,link)=>`Buongiorno, sono Max, consulente incaricato da MRF 2024.
 
-Scrivo a ${s} perche' come clienti MRF rientrate nella convenzione attiva con Verisure, l'azienda n.1 in Europa negli allarmi monitorati per attivita' commerciali.
+  A:(s,link)=>`Buongiorno, sono Max, consulente incaricato da MRF 2024.
 
-Le condizioni riservate: installazione, connessione e collegamento alla Centrale Operativa a 199 euro invece di 1.241, piu' 3 Shock Sensor in omaggio. Il sistema e' in comodato gratuito, con servizio in abbonamento.
+Vi contatto perché, in quanto clienti MRF, rientrate nella convenzione attiva con Verisure, azienda leader in Europa nei sistemi di allarme monitorati per attività commerciali.
 
-Per vedere i dettagli della convenzione e lasciarmi la vostra risposta, aprite questa pagina:
+Le condizioni riservate prevedono: installazione, connessione e collegamento alla Centrale Operativa a 199 € anziché 1.241 €, più 3 Shock Sensor in omaggio. Il sistema è in comodato gratuito, con servizio in abbonamento.
+
+Per conoscere tutti i dettagli della convenzione e indicarmi se desiderate essere ricontattati, potete utilizzare questa pagina:
 ${link}
 
-Da lì potete indicarmi se desiderate essere ricontattati e la fascia oraria preferita.
+Da lì potrete anche indicare la fascia oraria preferita.
 
-Se preferite non ricevere altre comunicazioni, scrivete STOP.`};
+Se preferite non ricevere altre comunicazioni, scrivete STOP.`
+};
 
 const messaggioCliente=c=>MSG[c.t](c.s,linkCliente(c));
 const OGG={P:s=>`${s}, una convenzione riservata ai clienti MRF 2024`,
