@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MRF Launcher">
+<title>Campagna MRF 2024 x Verisure</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#001B4D; --blu:#003087; --blu2:#2E6DB4;
+  --verde:#3D8B32; --arancio:#E8821A;
+  --carta:#F2F4F8; --bianco:#fff; --grigio:#6B7280; --bordo:#DDE2EA;
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+ background:var(--carta);color:var(--navy);line-height:1.45;padding-bottom:64px}
+
+header{background:var(--navy);color:#fff;padding:18px 16px 16px;
+ padding-top:calc(18px + env(safe-area-inset-top))}
+h1{font-size:17px;font-weight:700;letter-spacing:-.2px}
+.sub{font-size:12.5px;color:#9FB3D9;margin-top:3px}
+
+.oggi{margin-top:16px;background:rgba(255,255,255,.07);border-radius:10px;padding:13px 14px}
+.oggi-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:#9FB3D9}
+.big{font-size:30px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1.1}
+.big span{font-size:15px;font-weight:400;color:#9FB3D9}
+.barra{height:5px;background:rgba(255,255,255,.13);border-radius:3px;margin-top:9px;overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:var(--arancio);border-radius:3px;transition:width .35s}
+.soglia{font-size:11.5px;color:#9FB3D9;margin-top:7px}
+.soglia.stop{color:#FFC46B;font-weight:600}
+
+.tools{position:sticky;top:0;z-index:20;background:var(--carta);
+ padding:11px 16px 9px;border-bottom:1px solid var(--bordo)}
+input[type=search]{width:100%;padding:11px 13px;font-size:16px;font-family:inherit;
+ border:1.5px solid var(--bordo);border-radius:9px;background:#fff;color:var(--navy)}
+input[type=search]:focus{outline:none;border-color:var(--blu2)}
+.filtri{display:flex;gap:6px;margin-top:9px;overflow-x:auto;scrollbar-width:none}
+.filtri::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:6px 12px;font-size:12.5px;font-family:inherit;
+ border:1.5px solid var(--bordo);background:#fff;color:var(--grigio);
+ border-radius:20px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed=true]{background:var(--blu);border-color:var(--blu);color:#fff;font-weight:600}
+
+main{padding:12px 16px}
+.conteggio{font-size:12.5px;color:var(--grigio);margin-bottom:10px}
+
+.riga{background:#fff;border:1px solid var(--bordo);border-radius:11px;
+ padding:12px 13px;margin-bottom:9px}
+.riga.done{background:#F7F9F7;border-color:#CFE3CB}
+.testa{display:flex;align-items:flex-start;gap:9px}
+.nome{font-size:15px;font-weight:600;flex:1;min-width:0;word-break:break-word}
+.riga.done .nome{color:var(--grigio);text-decoration:line-through}
+.tag{flex:0 0 auto;font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:5px;
+ background:#E8EDF6;color:var(--blu);margin-top:2px}
+.tag.a{background:#FDF0DF;color:#A65C05}
+.rec{font-size:12.5px;color:var(--grigio);margin-top:4px;word-break:break-all}
+
+.azioni{display:flex;gap:7px;margin-top:11px}
+.btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+ padding:11px 8px;font-size:13.5px;font-weight:600;font-family:inherit;
+ border:none;border-radius:8px;cursor:pointer;text-decoration:none}
+.wa{background:var(--verde);color:#fff}
+.mail{background:var(--blu);color:#fff}
+.tel{background:#fff;color:var(--blu);border:1.5px solid var(--bordo)}
+.fatto{flex:0 0 46px;background:#fff;color:var(--grigio);border:1.5px solid var(--bordo);font-size:17px}
+.riga.done .fatto{background:var(--verde);color:#fff;border-color:var(--verde)}
+.btn:active{transform:scale(.97)}
+
+.vuoto{text-align:center;padding:44px 16px;color:var(--grigio);font-size:14px}
+
+.promemoria{margin:18px 16px 0;background:#fff;border:1px solid var(--bordo);
+ border-left:4px solid var(--arancio);border-radius:10px;padding:14px 15px;font-size:13px}
+.promemoria b{display:block;margin-bottom:7px;font-size:13.5px}
+.promemoria p{margin-bottom:8px;color:#3A4557}
+.promemoria p:last-child{margin-bottom:0}
+.promemoria code{background:#F2F4F8;padding:1px 5px;border-radius:4px;font-size:12.5px}
+
+footer{padding:22px 16px 10px;text-align:center}
+.reset{font-size:12.5px;color:var(--grigio);background:none;border:none;
+ font-family:inherit;text-decoration:underline;cursor:pointer}
+.avviso{position:fixed;left:50%;bottom:20px;transform:translate(-50%,90px);
+ background:var(--navy);color:#fff;padding:11px 18px;border-radius:22px;font-size:13px;
+ transition:transform .3s;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.avviso.on{transform:translate(-50%,0)}
+.disp{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:12.5px;color:#9FB3D9}
+.dchip{padding:5px 11px;font-size:12.5px;font-family:inherit;border-radius:16px;cursor:pointer;
+ border:1.5px solid rgba(255,255,255,.22);background:none;color:#9FB3D9}
+.dchip[aria-pressed=true]{background:#fff;border-color:#fff;color:var(--navy);font-weight:600}
+.dnota{font-size:11.5px;color:#9FB3D9;margin-top:7px;line-height:1.4}
+.velo{position:fixed;inset:0;background:rgba(0,15,45,.55);z-index:70;display:none;
+ align-items:flex-end;justify-content:center}
+.velo.on{display:flex}
+.foglio{background:#fff;width:100%;max-width:560px;border-radius:14px 14px 0 0;
+ padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:82vh;overflow:auto}
+.foglio-t{font-size:14px;font-weight:700;margin-bottom:10px}
+.foglio pre{white-space:pre-wrap;font-family:inherit;font-size:13.5px;color:#3A4557;
+ background:var(--carta);border-radius:9px;padding:13px;margin-bottom:12px;line-height:1.5}
+.anteprima{background:none;border:none;font-family:inherit;font-size:12.5px;
+ color:var(--blu2);text-decoration:underline;cursor:pointer;padding:8px 0 0;display:block}
+
+.conferma{position:fixed;left:0;right:0;bottom:0;z-index:65;background:#fff;
+ border-top:2px solid var(--arancio);padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+ transform:translateY(140%);transition:transform .28s;box-shadow:0 -4px 20px rgba(0,0,0,.13)}
+.conferma.on{transform:translateY(0)}
+.conferma-t{font-size:14px;font-weight:600;margin-bottom:11px}
+.conferma-b{display:flex;gap:8px}
+
+.storia{font-size:12px;color:var(--verde);margin-top:5px;font-weight:600}
+.riga.out{background:#FBF3F2;border-color:#EBCFCB;opacity:.85}
+.riga.out .nome{color:#8C4038;text-decoration:line-through}
+.uscito{font-size:12px;color:#A8443A;margin-top:5px;font-weight:600}
+.esci{background:none;border:none;font-family:inherit;font-size:12.5px;color:#A8443A;
+ text-decoration:underline;cursor:pointer;padding:8px 0 0;display:block}
+.rientra{color:var(--blu2)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.rubrica-box{margin:12px 16px 0;background:#fff;border:1px solid var(--bordo);border-radius:11px;padding:13px 14px}
+.rubrica-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.rubrica-title{font-size:13.5px;font-weight:700}
+.rubrica-meta{font-size:12px;color:var(--grigio);margin-top:4px}
+.rubrica-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.rubrica-actions button{border:1.5px solid var(--bordo);background:#fff;color:var(--blu);font:600 12.5px inherit;padding:8px 10px;border-radius:8px;cursor:pointer}
+.rubrica-actions .primary{background:var(--blu);color:#fff;border-color:var(--blu)}
+.rubrica-help{font-size:11.5px;color:var(--grigio);margin-top:8px;line-height:1.4}
+.import-note{margin:10px 16px 0;background:#FFF8E8;border:1px solid #F1D79A;border-radius:10px;padding:11px 13px;font-size:12.5px;color:#72530A}
+.hidden-input{display:none}
+
+</style></head><body>
+
+<header>
+  <h1>MRF Launcher 2.0 &middot; Verisure</h1>
+  <div class="sub"><span id="subCount">Rubrica non caricata</span> &middot; convenzione valida fino al 12 giugno 2027</div>
+  <div style="margin-top:8px;font-size:11.5px;color:#FFC46B;font-weight:600">USO PRIVATO — non pubblicare questo file online: contiene dati clienti. La pagina pubblica riceve solo un codice anonimo.</div>
+  <div class="oggi">
+    <div class="oggi-top"><span>Inviati oggi</span><span id="totale"></span></div>
+    <div class="big"><span id="oggi">0</span><span> / 40</span></div>
+    <div class="barra"><i id="barra"></i></div>
+    <div class="soglia" id="soglia">Il limite giornaliero protegge la lista dallo spam.</div>
+  </div>
+  <div class="disp">
+    <span>Stai lavorando da</span>
+    <button class="dchip" data-d="app" aria-pressed="true">Telefono</button>
+    <button class="dchip" data-d="web" aria-pressed="false">Computer / iPad</button>
+  </div>
+  <div class="dnota" id="dnota"></div>
+</header>
+
+<div class="rubrica-box">
+  <div class="rubrica-head">
+    <div>
+      <div class="rubrica-title">Rubrica privata locale</div>
+      <div class="rubrica-meta" id="rubricaMeta">Nessun contatto importato su questo dispositivo.</div>
+    </div>
+  </div>
+  <div class="rubrica-actions">
+    <button class="primary" id="importaRubrica">Importa / aggiorna CSV</button>
+    <button id="backupCompleto">Backup completo</button>
+    <button id="ripristinaBackup">Ripristina backup</button>
+  </div>
+  <div class="rubrica-help">I contatti restano nel browser del dispositivo. Il file pubblico su GitHub non riceve la rubrica. Per gli aggiornamenti usa un CSV con le colonne Rif_MRF, Nominativo, Saluto, Tipo, Email, WhatsApp, Fisso.</div>
+  <input class="hidden-input" id="fileRubrica" type="file" accept=".csv,text/csv">
+  <input class="hidden-input" id="fileBackup" type="file" accept=".json,application/json">
+</div>
+<div class="import-note" id="importNote" style="display:none">Prima configurazione: importa il file <b>MRF_Rubrica_PRIVATA.csv</b>. In seguito potrai importare versioni aggiornate senza perdere storico e STOP.</div>
+
+<div class="tools">
+  <input type="search" id="cerca" placeholder="Cerca nome, email o numero" autocomplete="off">
+  <div class="filtri">
+    <button class="chip" data-f="tutti" aria-pressed="true">Tutti</button>
+    <button class="chip" data-f="da" aria-pressed="false">Da contattare</button>
+    <button class="chip" data-f="wa" aria-pressed="false">Con WhatsApp</button>
+    <button class="chip" data-f="mail" aria-pressed="false">Solo email</button>
+    <button class="chip" data-f="azienda" aria-pressed="false">Aziende</button>
+    <button class="chip" data-f="fatti" aria-pressed="false">Gia contattati</button>
+    <button class="chip" data-f="storico" aria-pressed="false">Storico invii</button>
+    <button class="chip" data-f="stop" aria-pressed="false">Usciti (STOP)</button>
+  </div>
+</div>
+
+<main>
+  <div class="conteggio" id="conteggio"></div>
+  <div id="lista"></div>
+</main>
+
+<div class="promemoria">
+  <b>Le tre cose da dire sempre</b>
+  <p>Il cliente attiva la convenzione solo chiamando il numero verde <code>800124510</code> con il codice <code>CONVENZIONE MRF 2024</code>, oppure dal form dedicato. Ogni altro canale gli fa perdere lo sconto.</p>
+  <p>I 199&euro; sono installazione, connessione e collegamento alla Centrale Operativa. Il sistema &egrave; in comodato gratuito, il servizio in abbonamento. Dillo per intero.</p>
+  <p>Chi risponde STOP esce dalla lista subito e per sempre.</p>
+</div>
+
+<footer>
+  <button class="reset" id="esporta">Esporta storico in CSV</button><br><br>
+  <button class="reset" id="reset">Azzera i contatti segnati</button>
+</footer>
+<div class="avviso" id="avviso"></div>
+
+<div class="velo" id="velo"><div class="foglio">
+  <div class="foglio-t" id="foglio-t"></div>
+  <pre id="foglio-c"></pre>
+  <button class="btn mail" id="copia">Copia il testo</button>
+  <button class="btn tel" id="chiudi" style="margin-top:7px">Chiudi</button>
+</div></div>
+
+<div class="conferma" id="conferma">
+  <div class="conferma-t" id="conferma-t"></div>
+  <div class="conferma-b">
+    <button class="btn wa" id="si">Si, inviato</button>
+    <button class="btn tel" id="no">Non inviato</button>
+  </div>
+</div>
+
+<script>
+const PAGINA_CLIENTE_URL='https://maxcaccia1983.github.io/MRF-convenzione-verisure/';
+const KR='mrf_rubrica_v3';
+const KS='mrf_stato_v3';
+const KOLD='mrf_verisure_v2';
+
+let D=[];
+let S={fatti:{},giorno:'',oggi:0,log:[],out:{}};
+
+const $=id=>document.getElementById(id);
+const oggiData=()=>new Date().toISOString().slice(0,10);
+const oraIt=ts=>new Date(ts).toLocaleString('it-IT',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+const norm=s=>String(s||'').trim().toLowerCase().replace(/\s+/g,' ');
+const digits=s=>String(s||'').replace(/\D/g,'');
+const randRef=()=>{
+ const abc='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+ let r=''; const a=new Uint32Array(12);
+ if(crypto&&crypto.getRandomValues)crypto.getRandomValues(a); else for(let i=0;i<a.length;i++)a[i]=Math.random()*1e9;
+ for(let i=0;i<12;i++)r+=abc[a[i]%abc.length];
+ return r;
+};
+
+function caricaLocale(){
+ try{
+   const r=localStorage.getItem(KR); if(r)D=JSON.parse(r);
+   const s=localStorage.getItem(KS); if(s)S=Object.assign(S,JSON.parse(s));
+ }catch(e){}
+ if(!S.log)S.log=[]; if(!S.out)S.out={}; if(!S.fatti)S.fatti={};
+ if(S.giorno!==oggiData()){S.giorno=oggiData();S.oggi=0;salvaStato();}
+ aggiornaRubricaUI();
+}
+function salvaRubrica(){try{localStorage.setItem(KR,JSON.stringify(D));}catch(e){alert('Impossibile salvare la rubrica su questo dispositivo.');}}
+function salvaStato(){try{localStorage.setItem(KS,JSON.stringify(S));}catch(e){}}
+function aggiornaRubricaUI(){
+ const n=D.length;
+ $('rubricaMeta').textContent=n?`${n} contatti memorizzati localmente.`:'Nessun contatto importato su questo dispositivo.';
+ $('subCount').textContent=n?`${n} contatti in rubrica`:'Rubrica non caricata';
+ $('importNote').style.display=n?'none':'block';
+}
+
+const refCliente=c=>c.r||'';
+const linkCliente=c=>{
+ const sep=PAGINA_CLIENTE_URL.includes('?')?'&':'?';
+ return PAGINA_CLIENTE_URL+sep+'cid='+encodeURIComponent(refCliente(c));
+};
+
+const MSG={
+ P:(s,link)=>`Buongiorno ${s}, sono Max, consulente incaricato da MRF 2024.
+
+Le scrivo perche' come cliente MRF rientra nella convenzione attiva con Verisure, l'azienda n.1 in Europa negli allarmi monitorati.
+
+Le condizioni riservate: installazione, connessione e collegamento alla Centrale Operativa a 199 euro invece di 1.241, piu' 3 Shock Sensor in omaggio. Il sistema e' in comodato gratuito, con servizio in abbonamento.
+
+Per vedere i dettagli della convenzione e lasciarmi la sua risposta, apra questa pagina:
+${link}
+
+Da lì può indicarmi se desidera essere ricontattato e la fascia oraria preferita.
+
+Se preferisce non ricevere altre comunicazioni, mi scriva STOP.`,
+ A:(s,link)=>`Buongiorno, sono Max, consulente incaricato da MRF 2024.
+
+Scrivo a ${s} perche' come clienti MRF rientrate nella convenzione attiva con Verisure, l'azienda n.1 in Europa negli allarmi monitorati per attivita' commerciali.
+
+Le condizioni riservate: installazione, connessione e collegamento alla Centrale Operativa a 199 euro invece di 1.241, piu' 3 Shock Sensor in omaggio. Il sistema e' in comodato gratuito, con servizio in abbonamento.
+
+Per vedere i dettagli della convenzione e lasciarmi la vostra risposta, aprite questa pagina:
+${link}
+
+Da lì potete indicarmi se desiderate essere ricontattati e la fascia oraria preferita.
+
+Se preferite non ricevere altre comunicazioni, scrivete STOP.`};
+
+const messaggioCliente=c=>MSG[c.t](c.s,linkCliente(c));
+const OGG={P:s=>`${s}, una convenzione riservata ai clienti MRF 2024`,
+           A:s=>`Convenzione MRF 2024 x Verisure - messa in sicurezza dei vostri locali`};
+
+let filtro='tutti',q='';
+let disp='app';
+try{disp=localStorage.getItem('mrf_disp')||'app';}catch(e){}
+const NOTE={
+ app:'Tocchi e si apre WhatsApp col messaggio gia scritto. Il tasto di invio lo premi tu.',
+ web:'I link passano da WhatsApp Web: tieni aperta una scheda su web.whatsapp.com gia collegata al telefono. Se non funziona, usa "Vedi il messaggio" e il tasto Copia.'};
+const waUrl=c=>{const t=encodeURIComponent(messaggioCliente(c));
+ return disp==='web'?`https://web.whatsapp.com/send?phone=${c.w}&text=${t}`:`https://wa.me/${c.w}?text=${t}`;};
+
+function avvisa(t){const a=$('avviso');a.textContent=t;a.classList.add('on');clearTimeout(a._t);a._t=setTimeout(()=>a.classList.remove('on'),2400);}
+function ultimo(ref){for(let k=S.log.length-1;k>=0;k--)if(S.log[k].r===ref)return S.log[k];return null;}
+
+function testata(){
+ $('oggi').textContent=S.oggi||0;
+ $('barra').style.width=Math.min(100,(S.oggi||0)/40*100)+'%';
+ const active=D.filter(c=>!S.out[c.r]).length;
+ const f=Object.keys(S.fatti).filter(r=>S.fatti[r]).length;
+ const u=Object.keys(S.out).filter(r=>S.out[r]).length;
+ $('totale').textContent=(D.length?`${f} contattati su ${active}`:'')+(u?` | ${u} STOP`:'');
+ const s=$('soglia');
+ if((S.oggi||0)>=40){s.textContent='Hai raggiunto i 40 di oggi. Fermati qui: domani riparti a lista intatta.';s.className='soglia stop';}
+ else{s.textContent='Il limite giornaliero protegge la lista dallo spam.';s.className='soglia';}
+}
+
+function passa(c){
+ const r=c.r,done=!!S.fatti[r],fuori=!!S.out[r];
+ if(filtro==='stop')return fuori;
+ if(fuori)return false;
+ if(filtro==='storico')return done;
+ if(filtro==='da'&&done)return false;
+ if(filtro==='fatti'&&!done)return false;
+ if(filtro==='wa'&&!c.w)return false;
+ if(filtro==='mail'&&(c.w||!c.e))return false;
+ if(filtro==='azienda'&&c.t!=='A')return false;
+ if(q){const b=(c.n+' '+c.e+' '+c.w+' '+c.f+' '+c.r).toLowerCase();if(!b.includes(q))return false;}
+ return true;
+}
+
+function disegna(){
+ const L=$('lista');L.innerHTML='';
+ if(!D.length){L.innerHTML='<div class="vuoto">Importa la rubrica privata per iniziare.</div>'; $('conteggio').textContent='';testata();return;}
+ let n=0;const fr=document.createDocumentFragment();
+ D.forEach(c=>{
+   if(!passa(c))return;n++;if(n>300)return;
+   const r=c.r,done=!!S.fatti[r],fuori=!!S.out[r];
+   const d=document.createElement('div');d.className='riga'+(done?' done':'')+(fuori?' out':'');
+   const rec=[c.e,c.w?'+'+c.w:'',c.f?'+'+c.f+' (fisso)':''].filter(Boolean).join(' &middot; ');
+   let btn='';
+   if(c.w)btn+=`<a class="btn wa" href="${waUrl(c)}" target="_blank" rel="noopener" data-r="${r}">WhatsApp</a>`;
+   if(c.e)btn+=`<a class="btn mail" href="mailto:${c.e}?subject=${encodeURIComponent(OGG[c.t](c.s))}&body=${encodeURIComponent(messaggioCliente(c))}" data-r="${r}">Email</a>`;
+   if(!c.w&&c.f)btn+=`<a class="btn tel" href="tel:+${c.f}" data-r="${r}">Chiama</a>`;
+   const u=done?ultimo(r):null;
+   d.innerHTML=`<div class="testa"><div class="nome">${esc(c.n)}</div>
+     <div class="tag ${c.t==='A'?'a':''}">${c.t==='A'?'AZIENDA':'PRIVATO'}</div></div>
+     <div class="rec">${rec}${rec?' &middot; ':''}Rif. MRF ${esc(r)}</div>
+     ${fuori?`<div class="uscito">Uscito dalla lista il ${oraIt(S.out[r])}</div>`:(u?`<div class="storia">Inviato ${esc(u.c)} il ${oraIt(u.ts)}</div>`:'')}
+     <div class="azioni">${btn}<button class="btn fatto" data-toggle="${r}" title="Segna come contattato">&#10003;</button></div>
+     ${fuori?`<button class="esci rientra" data-out="${r}">Rimettilo in lista</button>`
+       :`<button class="anteprima" data-vedi="${r}">Vedi il messaggio che verra inviato</button>
+         <button class="esci" data-out="${r}">Ha risposto STOP: toglilo dalla lista</button>`}`;
+   fr.appendChild(d);
+ });
+ L.appendChild(fr);
+ $('conteggio').textContent=n===0?'':(n>300?`Primi 300 di ${n} contatti. Usa la ricerca per restringere.`:`${n} contatt${n===1?'o':'i'}`);
+ if(n===0)L.innerHTML='<div class="vuoto">Nessun contatto con questi filtri.</div>';
+ testata();
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function trova(r){return D.find(c=>c.r===r);}
+
+function segna(r,canale){
+ if(!S.fatti[r])S.oggi=(S.oggi||0)+1;
+ S.fatti[r]=1;S.log.push({r,c:canale,ts:Date.now()});salvaStato();disegna();
+}
+let attesa=null;
+function chiediConferma(r,canale){
+ const c=trova(r);if(!c)return;attesa={r,c:canale};
+ $('conferma-t').textContent='Hai premuto invio su '+canale+' per '+c.n+'?';
+ $('conferma').classList.add('on');
+}
+
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-toggle]');
+ if(t){const r=t.dataset.toggle;
+   if(S.fatti[r]){delete S.fatti[r];S.oggi=Math.max(0,(S.oggi||0)-1);S.log=S.log.filter(x=>x.r!==r);avvisa('Rimesso tra i da contattare');salvaStato();disegna();}
+   else{segna(r,'a mano');avvisa('Segnato come contattato');}return;}
+ const o=e.target.closest('[data-out]');
+ if(o){const r=o.dataset.out;
+   if(S.out[r]){delete S.out[r];avvisa('Rimesso in lista');}
+   else{if(!confirm('Confermi che ha chiesto di non essere piu contattato?'))return;S.out[r]=Date.now();delete S.fatti[r];S.log=S.log.filter(x=>x.r!==r);avvisa('Tolto dalla lista');}
+   salvaStato();disegna();return;}
+ const v=e.target.closest('[data-vedi]');
+ if(v){const c=trova(v.dataset.vedi);if(!c)return;$('foglio-t').textContent='Messaggio per '+c.n;$('foglio-c').textContent=messaggioCliente(c);$('velo').classList.add('on');return;}
+ const a=e.target.closest('.btn.wa,.btn.mail,.btn.tel');
+ if(a&&a.dataset.r){const canale=a.classList.contains('wa')?'WhatsApp':a.classList.contains('mail')?'Email':'Telefono';setTimeout(()=>chiediConferma(a.dataset.r,canale),900);}
+});
+
+$('si').addEventListener('click',()=>{if(attesa)segna(attesa.r,attesa.c);$('conferma').classList.remove('on');attesa=null;avvisa('Registrato nello storico');});
+$('no').addEventListener('click',()=>{$('conferma').classList.remove('on');attesa=null;avvisa('Nessun invio registrato');});
+$('chiudi').addEventListener('click',()=>$('velo').classList.remove('on'));
+$('velo').addEventListener('click',e=>{if(e.target.id==='velo')e.target.classList.remove('on');});
+$('copia').addEventListener('click',()=>{const t=$('foglio-c').textContent;navigator.clipboard?navigator.clipboard.writeText(t).then(()=>avvisa('Testo copiato')):avvisa('Copia non disponibile');});
+
+function parseCSV(text){
+ text=text.replace(/^\uFEFF/,'');
+ const first=(text.split(/\r?\n/,1)[0]||'');
+ const delim=(first.match(/;/g)||[]).length>=(first.match(/,/g)||[]).length?';':',';
+ const rows=[];let row=[],cell='',q=false;
+ for(let i=0;i<text.length;i++){
+   const ch=text[i];
+   if(q){if(ch==='"'&&text[i+1]==='"'){cell+='"';i++;}else if(ch==='"')q=false;else cell+=ch;}
+   else{if(ch==='"')q=true;else if(ch===delim){row.push(cell);cell='';}else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell='';}else if(ch!=='\r')cell+=ch;}
+ }
+ if(cell.length||row.length){row.push(cell);rows.push(row);}
+ return rows.filter(r=>r.some(x=>String(x).trim()!==''));
+}
+function headerKey(s){return norm(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');}
+function valore(o,keys){for(const k of keys)if(o[k]!=null&&String(o[k]).trim()!=='')return String(o[k]).trim();return '';}
+
+function importaCSV(text){
+ const rows=parseCSV(text);if(rows.length<2)throw new Error('CSV vuoto o senza righe dati.');
+ const heads=rows[0].map(headerKey);
+ const existingByRef=new Map(D.map(c=>[c.r,c]));
+ const existingByPhone=new Map(D.filter(c=>c.w).map(c=>[digits(c.w),c]));
+ const existingByEmail=new Map(D.filter(c=>c.e).map(c=>[norm(c.e),c]));
+ const existingByName=new Map(D.map(c=>[norm(c.n),c]));
+ let added=0,updated=0,skipped=0;
+ const incoming=[];const seen=new Set();
+ rows.slice(1).forEach(arr=>{
+   const o={};heads.forEach((h,i)=>o[h]=arr[i]??'');
+   let r=valore(o,['rifmrf','rif','token','codice']);
+   const n=valore(o,['nominativo','nome','cliente','ragionesociale']);
+   if(!n){skipped++;return;}
+   const s=valore(o,['saluto','nomebreve','chiamarecome'])||n.split(' ')[0];
+   const tipoRaw=valore(o,['tipo','tipologia','categoria']).toUpperCase();
+   const t=tipoRaw.startsWith('A')?'A':'P';
+   const e=valore(o,['email','mail']);
+   let w=digits(valore(o,['whatsapp','cellulare','mobile','telefono']));
+   let f=digits(valore(o,['fisso','telefonofisso']));
+   if(w&&w.length===10&&w.startsWith('3'))w='39'+w;
+   if(f&&f.length>=9&&!f.startsWith('39'))f='39'+f;
+   let old=(r&&existingByRef.get(r))||(w&&existingByPhone.get(w))||(e&&existingByEmail.get(norm(e)))||existingByName.get(norm(n));
+   if(old){r=old.r;updated++;}else{if(!r||r.length<8)r=randRef();added++;}
+   if(seen.has(r)){skipped++;return;}seen.add(r);
+   incoming.push({r,n,s,t,e,w,f});
+ });
+ if(!incoming.length)throw new Error('Nessun contatto valido trovato.');
+ D=incoming;salvaRubrica();aggiornaRubricaUI();disegna();
+ return {added,updated,skipped,total:D.length};
+}
+
+$('importaRubrica').addEventListener('click',()=>$('fileRubrica').click());
+$('fileRubrica').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{const res=importaCSV(await file.text());avvisa(`Rubrica aggiornata: ${res.total} contatti`);
+ alert(`Importazione completata.\n\nTotale: ${res.total}\nNuovi: ${res.added}\nAggiornati/riconosciuti: ${res.updated}\nSaltati: ${res.skipped}\n\nStorico e STOP sono conservati tramite il Rif. MRF.`);}
+ catch(err){alert('Importazione non riuscita: '+err.message);}
+ e.target.value='';
+});
+
+function scarica(nome,contenuto,tipo){
+ const b=new Blob([contenuto],{type:tipo}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=nome;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
+}
+$('backupCompleto').addEventListener('click',()=>{
+ const data={version:3,exportedAt:new Date().toISOString(),clients:D,state:S};
+ scarica('MRF_Backup_Completo.json',JSON.stringify(data,null,2),'application/json');avvisa('Backup completo creato');
+});
+$('ripristinaBackup').addEventListener('click',()=>$('fileBackup').click());
+$('fileBackup').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{
+  const x=JSON.parse(await f.text());if(!Array.isArray(x.clients)||!x.state)throw new Error('File backup non valido.');
+  if(!confirm(`Ripristinare ${x.clients.length} contatti e relativo storico?`))return;
+  D=x.clients;S=x.state;salvaRubrica();salvaStato();aggiornaRubricaUI();disegna();avvisa('Backup ripristinato');
+ }catch(err){alert('Ripristino non riuscito: '+err.message);}
+ e.target.value='';
+});
+
+$('esporta').addEventListener('click',()=>{
+ if(!S.log.length&&!Object.keys(S.out).length){avvisa('Storico ancora vuoto');return;}
+ const r=[['Rif_MRF','Nominativo','Tipo','Email','Telefono','Canale','Data e ora','Stato']];
+ S.log.forEach(x=>{const c=trova(x.r);if(c)r.push([c.r,c.n,c.t==='A'?'AZIENDA':'PRIVATO',c.e,c.w?'+'+c.w:'',x.c,oraIt(x.ts),'Contattato']);});
+ Object.keys(S.out).forEach(ref=>{const c=trova(ref);if(c)r.push([c.r,c.n,c.t==='A'?'AZIENDA':'PRIVATO',c.e,c.w?'+'+c.w:'','-',oraIt(S.out[ref]),'STOP - non ricontattare']);});
+ const csv='\uFEFF'+r.map(x=>x.map(y=>'"'+String(y).replace(/"/g,'""')+'"').join(';')).join('\n');
+ scarica('storico_invii_MRF.csv',csv,'text/csv;charset=utf-8');avvisa('Storico esportato');
+});
+
+$('cerca').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();disegna();});
+document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{filtro=b.dataset.f;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));window.scrollTo({top:0,behavior:'smooth'});disegna();}));
+$('reset').addEventListener('click',()=>{if(confirm('Azzeri tutti i contatti segnati? I dati della rubrica e gli STOP restano.')){S.fatti={};S.log=[];S.giorno=oggiData();S.oggi=0;salvaStato();disegna();avvisa('Contatti segnati azzerati');}});
+document.querySelectorAll('.dchip').forEach(b=>{
+ if(b.dataset.d===disp)b.setAttribute('aria-pressed','true');else b.setAttribute('aria-pressed','false');
+ b.addEventListener('click',()=>{disp=b.dataset.d;try{localStorage.setItem('mrf_disp',disp);}catch(e){}document.querySelectorAll('.dchip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('dnota').textContent=NOTE[disp];disegna();});
+});
+$('dnota').textContent=NOTE[disp];
+
+caricaLocale();disegna();
+</script></body></html>
