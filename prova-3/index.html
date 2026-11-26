@@ -167,7 +167,8 @@ footer{padding:22px 16px 10px;text-align:center}
     </div>
   </div>
   <div class="rubrica-actions">
-    <button class="primary" id="importaRubrica">Importa / aggiorna CSV</button>
+    <button class="primary" id="apriRubrica">Visualizza tutta la rubrica</button>
+    <button id="importaRubrica">Importa / aggiorna CSV</button>
     <button id="backupCompleto">Backup completo</button>
     <button id="ripristinaBackup">Ripristina backup</button>
   </div>
@@ -185,6 +186,7 @@ footer{padding:22px 16px 10px;text-align:center}
 <main>
   <div class="conteggio" id="conteggio"></div>
   <div id="lista"></div>
+  <div id="pagine" hidden><button class="chip" id="precedenti">Precedenti</button> <button class="chip" id="successivi">Successivi</button></div>
 </main>
 
 <div class="promemoria">
@@ -529,12 +531,19 @@ function scheda(c){
  if(filtro==='storico')html+=S.log.filter(e=>e.r===c.r).slice().reverse().map(e=>'<div class="storia">'+esc(e.c)+(e.tocco?' · Tocco '+e.tocco:'')+' · '+oraIt(e.ts)+'</div>').join('');
  return html+'<button class="esci" data-out="'+r+'">Ha risposto STOP: toglilo dalla lista</button>';
 }
+const perPagina=50;
+let pagina=0;
 function disegna(){
  aggiornaTempo();
  const elenco=D.filter(passa);
  if(filtro==='da')elenco.sort((a,b)=>prossimoTocco(b)-prossimoTocco(a));
- $('lista').innerHTML=elenco.slice(0,300).map(c=>'<article class="riga'+(S.out[c.r]?' out':'')+'">'+scheda(c)+'</article>').join('')||'<div class="vuoto">'+(D.length?'Nessun contatto con questi filtri.':'Importa la rubrica privata per iniziare.')+'</div>';
- $('conteggio').textContent=elenco.length>300?'Primi 300 di '+elenco.length+' contatti. Usa la ricerca per restringere.':elenco.length+' contatti';
+ pagina=Math.min(pagina,Math.max(0,Math.ceil(elenco.length/perPagina)-1));
+ const inizio=pagina*perPagina;
+ $('pagine').hidden=elenco.length<=perPagina;
+ $('precedenti').disabled=pagina===0;
+ $('successivi').disabled=inizio+perPagina>=elenco.length;
+ $('lista').innerHTML=elenco.slice(inizio,inizio+perPagina).map(c=>'<article class="riga'+(S.out[c.r]?' out':'')+'">'+scheda(c)+'</article>').join('')||'<div class="vuoto">'+(D.length?'Nessun contatto con questi filtri.':'Importa la rubrica privata per iniziare.')+'</div>';
+ $('conteggio').textContent=elenco.length>perPagina?`Contatti ${inizio+1}–${Math.min(inizio+perPagina,elenco.length)} di ${elenco.length}`:elenco.length+' contatti';
  $('oggi').textContent=S.oggi||0;$('barra').style.width=Math.min(100,(S.oggi||0)*2.5)+'%';
  $('totale').textContent=Object.values(S.fatti).filter(Boolean).length+' contattati · '+Object.keys(S.out).length+' STOP';
  $('soglia').textContent=S.oggi>=40?'Hai raggiunto i 40 invii di oggi. Riprendi domani.':'Il limite comprende tutti i tocchi confermati.';
@@ -714,8 +723,18 @@ $('reset').onclick=()=>{
  if(!confirm('Azzerare i contatti segnati, lo storico e tutte le sequenze (tocchi, esiti e pause)? Rubrica, STOP e limite già consumato oggi restano.'))return;
  S.fatti=dizionario();S.seq=dizionario();S.log=[];chiudiConferma();salvaStato();disegna();avvisa('Sequenze azzerate');
 };
-$('cerca').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();disegna();});
-document.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{filtro=b.dataset.f;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));window.scrollTo({top:0,behavior:'smooth'});disegna();}));
+function mostraPagina(delta){
+ pagina=Math.max(0,pagina+delta);disegna();document.querySelector('.tools').scrollIntoView();
+}
+$('precedenti').onclick=()=>mostraPagina(-1);
+$('successivi').onclick=()=>mostraPagina(1);
+$('apriRubrica').onclick=()=>{
+ filtro='tutti';pagina=0;q='';$('cerca').value='';
+ document.querySelectorAll('.chip[data-f]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===filtro));
+ disegna();document.querySelector('.tools').scrollIntoView();
+};
+$('cerca').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();pagina=0;disegna();});
+document.querySelectorAll('.chip[data-f]').forEach(b=>b.addEventListener('click',()=>{pagina=0;filtro=b.dataset.f;document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));window.scrollTo({top:0,behavior:'smooth'});disegna();}));
 document.querySelectorAll('.dchip').forEach(b=>{
  if(b.dataset.d===disp)b.setAttribute('aria-pressed','true');else b.setAttribute('aria-pressed','false');
  b.addEventListener('click',()=>{disp=b.dataset.d;try{archivio.setItem('mrf_disp',disp);}catch(e){}document.querySelectorAll('.dchip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('dnota').textContent=NOTE[disp];disegna();});
