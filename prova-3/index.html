@@ -140,7 +140,7 @@ footer{padding:22px 16px 10px;text-align:center}
 <header>
   <h1>MRF Launcher 3.0 &middot; Verisure</h1>
   <div class="sub"><span id="subCount">Rubrica non caricata</span> &middot; convenzione valida fino al <span id="dataFine"></span></div>
-  <div style="margin-top:8px;font-size:11.5px;color:#FFC46B;font-weight:600">USO PRIVATO · Versione di prova. Usa Ripristina backup per importare una copia dei tuoi dati.</div>
+  <div style="margin-top:8px;font-size:11.5px;color:#FFC46B;font-weight:600">USO PRIVATO · La prima apertura riprende i dati del Launcher precedente se disponibili in questo browser.</div>
   <div class="oggi">
     <div class="oggi-top"><span>Inviati oggi</span><span id="totale"></span></div>
     <div class="big"><span id="oggi">0</span><span> / 40</span></div>
@@ -725,7 +725,21 @@ $('dnota').textContent=NOTE[disp];
 
 $('dataFine').textContent=new Intl.DateTimeFormat('it-IT',{dateStyle:'long',timeZone:'Europe/Rome'}).format(Date.parse(SCADENZA_CONVENZIONE+'T12:00:00Z'));
 if(testValido)$('testData').textContent='Data di collaudo: '+simulata+' · usa una copia della rubrica.';
-leggiPreferenze();caricaLocale();disegna();
+// Copia una sola volta il punto di ripresa, solo in una prova ancora vuota.
+function riprendiDalLauncher(){
+ if(!prefisso || testValido || archivio.getItem(KR))return;
+ try{
+  const precedente=JSON.parse(archivio.getItem(KS)||'{}');
+  if(precedente.log?.length || precedente.oggi || ['seq','out','fatti'].some(k=>Object.keys(precedente[k]||{}).length))return;
+  const clients=JSON.parse(localStorage.getItem(KR)||'[]');
+  if(!clients.length)return;
+  const state=JSON.parse(localStorage.getItem(KS)||'{"fatti":{},"out":{},"log":[],"oggi":0}');
+  const copia={version:3,clients,state};
+  validaBackup(copia);
+  ripristina(copia);
+ }catch{avvisa('Per riprendere i dati precedenti usa Ripristina backup.',true);}
+}
+leggiPreferenze();caricaLocale();riprendiDalLauncher();disegna();
 window.addEventListener('storage',()=>{caricaLocale();leggiPreferenze();disegna();if(anteRef&&$('velo').classList.contains('on'))anteprima();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)disegna();});
 let ultimaData=oggiData();
